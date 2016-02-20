@@ -132,83 +132,18 @@ public class MainActivity extends AppCompatActivity {
         //imgview.setImageBitmap(rotatedBmp);
         Log.d("Image size", image.getWidth() + "");
         Map<String, Long> map = new HashMap<>();
-        map.put("http://jdevanathan3.github.io/subway.jpeg", 9292L);
+        /*map.put("http://jdevanathan3.github.io/subway.jpeg", 9292L);
         map.put("http://jdevanathan3.github.io/0220160359.jpg", 456L);
         map.put("http://jdevanathan3.github.io/0220161356.jpg", 567L);
-        KairosUtils.enrollUsers(map, rotatedBmp, "subwaypic", "IDGallery");
+        map.put("http://jdevanathan3.github.io/0220161441.jpg", 696L);*/
+
+        //ONES WE ADD
+        /*map.put("http://jdevanathan3.github.io/0220161457.jpg", 6969L);
+        map.put("http://jdevanathan3.github.io/0220161452.jpg", 3434L);*/
+        //ALEX
+        map.put("http://jdevanathan3.github.io/0220161356.jpg", 3435L);
+        //end alex
+        KairosUtils.enrollUsers(map, rotatedBmp, "subwaypic", 25, 25);
 
     }
-
-    /*public void makeRequest(String url, String imageURL, String imageName, String galleryName) {
-        // Request a string response from the provided URL.
-        JSONObject jsonBody = new JSONObject();
-        try {
-            jsonBody.put("image", imageURL);
-            jsonBody.put("subject_id", imageName);
-            jsonBody.put("gallery_name", galleryName);
-            jsonBody.put("selector", "SETPOSE");
-            jsonBody.put("symmetricFill", "true");
-        } catch (Exception e) {
-            Log.d("@MainActivity", "HELLA EXCEPTION");
-        }
-        JsonObjectRequest request = new JsonObjectRequest(
-                url, jsonBody,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("@MainActivity", "IT WORKS!!!!!");
-                        Log.d("MainActivity", response.toString());
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("@MainActivity", "Doesn't work.");
-                        Log.d("Volley Error", error.getStackTrace().toString());
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                // something to do here ??
-                Map<String, String> params = new HashMap<String, String>();
-                /*params.put("url", "http://jdevanathan3.github.io/Home_Picture.jpg");
-                params.put("subject_id", "JayD");
-                params.put("gallery_name", "MyGallery");*/
-                /*params.put("minHeadScale", ".125");
-                params.put("selector", "FACE");
-                params.put("multiple_faces", "false");
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                // something to do here ??
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/json");
-                params.put("app_id", "6354cb00");
-                params.put("app_key", "7323737bd141f7710b54fd3e8c71dbaf");
-                return params;
-            }
-        };
-        request.setRetryPolicy(new DefaultRetryPolicy(50000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        // Add the request to the RequestQueue.
-        queue.add(request);
-    }*/
-
-    /*KairosListener listener = new KairosListener() {
-
-        @Override
-        public void onSuccess(String response) {
-            // your code here!
-            Log.d("KAIROS DEMO", response);
-        }
-
-        @Override
-        public void onFail(String response) {
-            // your code here!
-            Log.d("KAIROS DEMO", response);
-        }
-    };*/
 }
