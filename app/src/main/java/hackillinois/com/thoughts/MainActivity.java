@@ -20,14 +20,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
 import com.kairos.Kairos;
 import com.kairos.KairosListener;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -61,14 +58,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO: Make a volley request here
                 // Instantiate the RequestQueue.
-                try {
+                /*try {
                     myKairos.enroll("http://jdevanathan3.github.io/Home_Picture.jpg",
                             "jaysbeautifulface3", "gallerytest1", "FACE", "false", "0.125", listener);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
-                }
+                }*/
                 dispatchTakePictureIntent();
                 /*makeRequest("https://api.kairos.com/enroll","http://jdevanathan3.github.io/Home_Picture.jpg",
                         "jaysbeautifulface3", "gallerytest1");*/
@@ -105,12 +102,13 @@ public class MainActivity extends AppCompatActivity {
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
+        Log.d("MainActivity", "GotHere");
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-
+        //Log.d("MainActivity", "GotHere");
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
@@ -126,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
+                Log.d("MainActivity", ex.getMessage());
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
