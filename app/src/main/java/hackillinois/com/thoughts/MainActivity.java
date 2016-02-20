@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    
+
     public void makeRequest(String url, String imageURL, String imageName, String galleryName) {
         // Request a string response from the provided URL.
         JSONObject jsonBody = new JSONObject();
