@@ -7,9 +7,12 @@ import android.util.Log;
 import com.kairos.Kairos;
 import com.kairos.KairosListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 /**
  * Created by Jay on 2/20/16.
@@ -17,6 +20,8 @@ import java.io.UnsupportedEncodingException;
 public class KairosUtils {
     private static Kairos myKairos;
     private static KairosListener listener;
+    private static KairosListener recognizeListener;
+    private static Map<String, Long> users;
 
     public static void init(Context c) {
         myKairos = new Kairos();
@@ -38,6 +43,49 @@ public class KairosUtils {
                 Log.d("KAIROS DEMO", response);
             }
         };
+
+        recognizeListener = new KairosListener() {
+
+            @Override
+            public void onSuccess(String s) {
+                try {
+                    Log.d("KAIROSUTILS", "REACHED HERE");
+                    Log.d("KAIROSUTILS", s);
+                    JSONObject obj = new JSONObject(s);
+                    JSONArray imagesArr = (JSONArray) obj.get("images");
+                    JSONObject highestConf = (JSONObject) imagesArr.get(0);
+                    JSONObject jobj = (JSONObject) highestConf.get("transaction");
+                    String subj = (String) jobj.get("subject");
+                    Log.d("KAIROSUTILS", subj);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFail(String s) {
+                Log.d("KAIROSUTILS", s);
+            }
+        };
+    }
+
+    public static void enrollUsers(Map<String, Long> map, Bitmap bmp, String pic, String gallery) {
+        for (String s : map.keySet()) {
+            try {
+                myKairos.enroll(s, map.get(s) + "", gallery, "FACE", "false", "0.125", listener);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            myKairos.recognize(bmp, gallery, "FACE", "0.63", "0.125", "2", recognizeListener);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void enroll(Bitmap rotatedBmp, String pic, String gallery) {

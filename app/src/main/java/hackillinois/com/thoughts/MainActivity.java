@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 //TODO: Make a volley request here
                 // Instantiate the RequestQueue.
                 dispatchTakePictureIntent();
+
             }
         });
     }
@@ -129,7 +131,9 @@ public class MainActivity extends AppCompatActivity {
         //ImageView imgview = (ImageView) findViewById(R.id.imageView);
         //imgview.setImageBitmap(rotatedBmp);
         Log.d("Image size", image.getWidth() + "");
-        KairosUtils.enroll(rotatedBmp, "testtakenpicture2", "gallerytest1");
+        Map<String, Long> map = new HashMap<>();
+        map.put("http://jdevanathan3.github.io/subway.jpeg", 9292L);
+        KairosUtils.enrollUsers(map, rotatedBmp, "subwaypic", "gallerytest1");
 
     }
 
