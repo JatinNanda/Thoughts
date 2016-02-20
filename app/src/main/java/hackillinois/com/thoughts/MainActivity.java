@@ -3,6 +3,7 @@ package hackillinois.com.thoughts;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -134,9 +136,16 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity", mCurrentPhotoPath);
 
         Bitmap image = BitmapFactory.decodeFile(mCurrentPhotoPath);
+        int w = image.getWidth();
+        int h = image.getHeight();
+        Matrix mtx = new Matrix();
+        mtx.preRotate(90);
+        Bitmap rotatedBmp = Bitmap.createBitmap(image, 0, 0, w, h, mtx, true);
+        ImageView imgview = (ImageView) findViewById(R.id.imageView);
+        imgview.setImageBitmap(rotatedBmp);
         Log.d("Image size", image.getWidth() + "");
         try {
-            myKairos.enroll(image, "testtakenpicture1", "gallerytest1", "FACE", "false", "0.125", listener);
+            myKairos.enroll(rotatedBmp, "testtakenpicture1", "gallerytest1", "FACE", "false", "0.125", listener);
         } catch(JSONException e) {
             e.printStackTrace();
         } catch(UnsupportedEncodingException e) {
