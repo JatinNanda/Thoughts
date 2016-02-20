@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.kairos.Kairos;
 import com.kairos.KairosListener;
+import com.loopj.android.http.AsyncHttpClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,8 +23,12 @@ public class KairosUtils {
     private static KairosListener listener;
     private static KairosListener recognizeListener;
     private static Map<String, Long> users;
+    private static Long uID;
 
     public static void init(Context c) {
+        final int DEFAULT_TIMEOUT = 20 * 1000;
+        AsyncHttpClient aClient = new AsyncHttpClient();
+        aClient.setTimeout(DEFAULT_TIMEOUT);
         myKairos = new Kairos();
         // set authentication
         String app_id = "6354cb00";
@@ -57,6 +62,7 @@ public class KairosUtils {
                     JSONObject jobj = (JSONObject) highestConf.get("transaction");
                     String subj = (String) jobj.get("subject");
                     Log.d("KAIROSUTILS", subj);
+                    uID = Long.parseLong(subj);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -80,12 +86,16 @@ public class KairosUtils {
             }
         }
         try {
-            myKairos.recognize(bmp, gallery, "FACE", "0.63", "0.125", "2", recognizeListener);
+            myKairos.recognize(bmp, gallery, "FACE", "0.1", "0.125", "5", recognizeListener);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        /*while(uID == null) {
+            //wait for task to finish
+        }*/
+        Log.d("LONG ID", uID + "");
     }
 
     public static void enroll(Bitmap rotatedBmp, String pic, String gallery) {

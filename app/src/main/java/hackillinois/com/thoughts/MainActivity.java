@@ -133,7 +133,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Image size", image.getWidth() + "");
         Map<String, Long> map = new HashMap<>();
         map.put("http://jdevanathan3.github.io/subway.jpeg", 9292L);
-        KairosUtils.enrollUsers(map, rotatedBmp, "subwaypic", "gallerytest1");
+        map.put("http://jdevanathan3.github.io/0220160359.jpg", 456L);
+        map.put("http://jdevanathan3.github.io/0220161356.jpg", 567L);
+        KairosUtils.enrollUsers(map, rotatedBmp, "subwaypic", "IDGallery");
 
     }
 
