@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         );
         //Log.d("MainActivity", "GotHere");
         // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
@@ -127,8 +127,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,
+                                 Intent data ) {
         Log.d("MainActivity", mCurrentPhotoPath);
+
         Bitmap image = BitmapFactory.decodeFile(mCurrentPhotoPath);
+        Log.d("Image size", image.getWidth() + "");
         try {
             myKairos.enroll(image, "testtakenpicture1", "gallerytest1", "FACE", "false", "0.125", listener);
         } catch(JSONException e) {
@@ -137,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    
+
     public void makeRequest(String url, String imageURL, String imageName, String galleryName) {
         // Request a string response from the provided URL.
         JSONObject jsonBody = new JSONObject();
