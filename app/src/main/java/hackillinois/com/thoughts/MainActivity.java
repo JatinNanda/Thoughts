@@ -17,8 +17,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import com.kairos.Kairos;
+import com.kairos.KairosListener;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +32,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // instantiate a new kairos instance
+        final Kairos myKairos = new Kairos();
+        // set authentication
+        String app_id = "6354cb00";
+        String api_key = "7323737bd141f7710b54fd3e8c71dbaf";
+        myKairos.setAuthentication(this, app_id, api_key);
+
         queue = Volley.newRequestQueue(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -38,8 +50,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO: Make a volley request here
                 // Instantiate the RequestQueue.
-                makeRequest("https://api.kairos.com/enroll","http://jdevanathan3.github.io/Home_Picture.jpg",
-                        "jaysbeautifulface3", "gallerytest1");
+                try {
+                    myKairos.enroll("http://jdevanathan3.github.io/Home_Picture.jpg",
+                            "jaysbeautifulface3", "gallerytest1", "FACE", "false", "0.125", listener);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 //String url, String imageURL, String imageName, String galleryName
             }
         });
@@ -66,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    
     public void makeRequest(String url, String imageURL, String imageName, String galleryName) {
         // Request a string response from the provided URL.
         JSONObject jsonBody = new JSONObject();
@@ -123,4 +142,19 @@ public class MainActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         queue.add(request);
     }
+
+    KairosListener listener = new KairosListener() {
+
+        @Override
+        public void onSuccess(String response) {
+            // your code here!
+            Log.d("KAIROS DEMO", response);
+        }
+
+        @Override
+        public void onFail(String response) {
+            // your code here!
+            Log.d("KAIROS DEMO", response);
+        }
+    };
 }
