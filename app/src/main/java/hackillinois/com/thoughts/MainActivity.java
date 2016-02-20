@@ -1,6 +1,8 @@
 package hackillinois.com.thoughts;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,10 +25,12 @@ import com.android.volley.toolbox.Volley;
 import com.kairos.Kairos;
 import com.kairos.KairosListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,11 +41,12 @@ public class MainActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
     String mCurrentPhotoPath;
+    static Kairos myKairos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // instantiate a new kairos instance
-        final Kairos myKairos = new Kairos();
+        myKairos = new Kairos();
         // set authentication
         String app_id = "6354cb00";
         String api_key = "7323737bd141f7710b54fd3e8c71dbaf";
@@ -58,18 +63,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO: Make a volley request here
                 // Instantiate the RequestQueue.
-                /*try {
-                    myKairos.enroll("http://jdevanathan3.github.io/Home_Picture.jpg",
-                            "jaysbeautifulface3", "gallerytest1", "FACE", "false", "0.125", listener);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }*/
                 dispatchTakePictureIntent();
-                /*makeRequest("https://api.kairos.com/enroll","http://jdevanathan3.github.io/Home_Picture.jpg",
-                        "jaysbeautifulface3", "gallerytest1");*/
-                //String url, String imageURL, String imageName, String galleryName
             }
         });
     }
@@ -133,8 +127,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
+        Log.d("MainActivity", mCurrentPhotoPath);
+        Bitmap image = BitmapFactory.decodeFile(mCurrentPhotoPath);
+        try {
+            myKairos.enroll(image, "testtakenpicture1", "gallerytest1", "FACE", "false", "0.125", listener);
+        } catch(JSONException e) {
+            e.printStackTrace();
+        } catch(UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
-
+    
     public void makeRequest(String url, String imageURL, String imageName, String galleryName) {
         // Request a string response from the provided URL.
         JSONObject jsonBody = new JSONObject();
