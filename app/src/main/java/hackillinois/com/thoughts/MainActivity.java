@@ -15,27 +15,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.kairos.Kairos;
-import com.kairos.KairosListener;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,20 +31,18 @@ public class MainActivity extends AppCompatActivity {
     static final int REQUEST_TAKE_PHOTO = 1;
     String mCurrentPhotoPath;
     static Kairos myKairos;
+    Map<Long, String> users;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // instantiate a new kairos instance
-        myKairos = new Kairos();
-        // set authentication
-        String app_id = "6354cb00";
-        String api_key = "7323737bd141f7710b54fd3e8c71dbaf";
-        myKairos.setAuthentication(this, app_id, api_key);
 
-        queue = Volley.newRequestQueue(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        KairosUtils.init(this);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -141,19 +126,14 @@ public class MainActivity extends AppCompatActivity {
         Matrix mtx = new Matrix();
         mtx.preRotate(90);
         Bitmap rotatedBmp = Bitmap.createBitmap(image, 0, 0, w, h, mtx, true);
-        ImageView imgview = (ImageView) findViewById(R.id.imageView);
-        imgview.setImageBitmap(rotatedBmp);
+        //ImageView imgview = (ImageView) findViewById(R.id.imageView);
+        //imgview.setImageBitmap(rotatedBmp);
         Log.d("Image size", image.getWidth() + "");
-        try {
-            myKairos.enroll(rotatedBmp, "testtakenpicture1", "gallerytest1", "FACE", "false", "0.125", listener);
-        } catch(JSONException e) {
-            e.printStackTrace();
-        } catch(UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        KairosUtils.enroll(rotatedBmp, "testtakenpicture2", "gallerytest1");
+
     }
 
-    public void makeRequest(String url, String imageURL, String imageName, String galleryName) {
+    /*public void makeRequest(String url, String imageURL, String imageName, String galleryName) {
         // Request a string response from the provided URL.
         JSONObject jsonBody = new JSONObject();
         try {
@@ -188,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 /*params.put("url", "http://jdevanathan3.github.io/Home_Picture.jpg");
                 params.put("subject_id", "JayD");
                 params.put("gallery_name", "MyGallery");*/
-                params.put("minHeadScale", ".125");
+                /*params.put("minHeadScale", ".125");
                 params.put("selector", "FACE");
                 params.put("multiple_faces", "false");
                 return params;
@@ -209,9 +189,9 @@ public class MainActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Add the request to the RequestQueue.
         queue.add(request);
-    }
+    }*/
 
-    KairosListener listener = new KairosListener() {
+    /*KairosListener listener = new KairosListener() {
 
         @Override
         public void onSuccess(String response) {
@@ -224,5 +204,5 @@ public class MainActivity extends AppCompatActivity {
             // your code here!
             Log.d("KAIROS DEMO", response);
         }
-    };
+    };*/
 }
