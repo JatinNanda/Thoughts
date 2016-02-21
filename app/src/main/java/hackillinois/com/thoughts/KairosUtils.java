@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.kairos.Kairos;
 import com.kairos.KairosListener;
@@ -116,7 +117,7 @@ public class KairosUtils {
                         }
                     }
                     new Test().execute(userId);
-
+                    TwitterSearchActivity.dialog.dismiss();
 
 //                    if (statusList.size() == 0) {
 //                        Log.d("TODISPLAY", " is null");
@@ -157,6 +158,8 @@ public class KairosUtils {
             public void onFail(String s) {
                 Log.d("KAIROSUTILS", "REACHED FAILURE");
                 Log.d("FAILURE", s);
+                TwitterSearchActivity.dialog.dismiss();
+                Toast.makeText(TwitterSearchActivity.con, "Unable to find a matching profile.", Toast.LENGTH_LONG).show();
             }
         };
     }

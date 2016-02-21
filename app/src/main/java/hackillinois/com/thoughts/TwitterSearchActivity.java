@@ -6,8 +6,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -40,6 +38,9 @@ public class TwitterSearchActivity extends Activity {
     public static TextView description;
     public static TextView found;
     public static ImageView picture;
+    public static ProgressDialog dialog;
+    public static SearchOnTwitter sTwitter;
+    public static TwitterSearchActivity currInstance;
 
 
 	@Override
@@ -50,17 +51,19 @@ public class TwitterSearchActivity extends Activity {
         description = (TextView) findViewById(R.id.description);
         found = (TextView) findViewById(R.id.found);
         picture = (ImageView) findViewById(R.id.profilePic);
-		btnSearch = (Button) findViewById(R.id.btnSearch);
 		list = (ListView) findViewById(R.id.list);
-		btnSearch.setOnClickListener(new OnClickListener() {
+		/*btnSearch.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
                 new SearchOnTwitter().execute();
 			}
-		});
+		});*/
+        currInstance = this;
 		l = new LocationManager(this);
+        sTwitter = new SearchOnTwitter();
+        sTwitter.execute();
 	}
 
     public void finishUp() {
@@ -72,7 +75,6 @@ public class TwitterSearchActivity extends Activity {
 		HashMap<String, Long> toProcess;
 		final int SUCCESS = 0;
 		final int FAILURE = SUCCESS + 1;
-		ProgressDialog dialog;
 
 
 		@Override
@@ -138,8 +140,6 @@ public class TwitterSearchActivity extends Activity {
 		@Override
 		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
-
-			dialog.dismiss();
 			if (result == SUCCESS) {
                 //establish authentication w/ Twitter
                 KairosUtils.enrollUsers(toProcess, MainActivity.bmpImg, "pic", l.getMyLatitude(), l.getMyLongitude());
@@ -149,6 +149,7 @@ public class TwitterSearchActivity extends Activity {
 			} else {
 				Toast.makeText(TwitterSearchActivity.this, getString(R.string.error), Toast.LENGTH_LONG).show();
 			}
+
 		}
     }
 

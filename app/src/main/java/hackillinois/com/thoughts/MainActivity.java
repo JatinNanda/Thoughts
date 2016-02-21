@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,10 +14,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.android.volley.RequestQueue;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.kairos.Kairos;
 
 import java.io.File;
@@ -37,8 +40,10 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        Button button = (Button)findViewById(R.id.btnMind);
+        ImageButton button = (ImageButton)findViewById(R.id.btnMind);
+        YoYo.with(Techniques.BounceInUp).delay(1400).playOn(button);
         KairosUtils.init(getApplicationContext());
+        button.setBackgroundColor(Color.TRANSPARENT);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

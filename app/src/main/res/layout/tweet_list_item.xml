@@ -9,13 +9,13 @@
     <TextView
         android:id="@+id/txtTweet"
         android:layout_width="fill_parent"
-        android:textColor="#191970"
+        android:textColor="#FFFFFF"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/txtTweetDate"
 
-        android:textColor="#191970"
+        android:textColor="#FFFFFF"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dip"
