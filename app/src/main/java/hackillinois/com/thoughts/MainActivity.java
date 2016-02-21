@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.android.volley.RequestQueue;
 import com.kairos.Kairos;
@@ -125,17 +126,22 @@ public class MainActivity extends AppCompatActivity {
         Bitmap image = BitmapFactory.decodeFile(mCurrentPhotoPath);
         int w = image.getWidth();
         int h = image.getHeight();
+
         Matrix mtx = new Matrix();
         mtx.preRotate(90);
         Bitmap rotatedBmp = Bitmap.createBitmap(image, 0, 0, w, h, mtx, true);
-        //ImageView imgview = (ImageView) findViewById(R.id.imageView);
-        //imgview.setImageBitmap(rotatedBmp);
+        int sW = (int) (rotatedBmp.getWidth() * 0.2f);
+        int sH = (int) (rotatedBmp.getHeight() * 0.2f);
+        Bitmap rBmp = Bitmap.createScaledBitmap(rotatedBmp, sW, sH, true);
+
+        ImageView imgview = (ImageView) findViewById(R.id.imageView);
+        imgview.setImageBitmap(rBmp);
         Log.d("Image size", image.getWidth() + "");
         Map<String, Long> map = new HashMap<>();
-        /*map.put("http://jdevanathan3.github.io/subway.jpeg", 9292L);
+        //map.put("http://jdevanathan3.github.io/subway.jpeg", 9292L);
         map.put("http://jdevanathan3.github.io/0220160359.jpg", 456L);
-        map.put("http://jdevanathan3.github.io/0220161356.jpg", 567L);
-        map.put("http://jdevanathan3.github.io/0220161441.jpg", 696L);*/
+        //map.put("http://jdevanathan3.github.io/0220161356.jpg", 567L);
+        //map.put("http://jdevanathan3.github.io/0220161441.jpg", 696L);*/
 
         //ONES WE ADD
         /*map.put("http://jdevanathan3.github.io/0220161457.jpg", 6969L);
@@ -143,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         //ALEX
         map.put("http://jdevanathan3.github.io/0220161356.jpg", 3435L);
         //end alex
-        KairosUtils.enrollUsers(map, rotatedBmp, "subwaypic", 25, 25);
+        KairosUtils.enrollUsers(map, rBmp, "subwaypic", 25, 25);
 
     }
 }

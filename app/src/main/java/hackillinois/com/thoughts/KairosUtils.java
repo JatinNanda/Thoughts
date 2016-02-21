@@ -29,7 +29,7 @@ public class KairosUtils {
     private static Long uID;
 
     public static void init(Context c) {
-        final int DEFAULT_TIMEOUT = 20 * 1000;
+        final int DEFAULT_TIMEOUT = 20 * 100000;
         AsyncHttpClient aClient = new AsyncHttpClient();
         aClient.setTimeout(DEFAULT_TIMEOUT);
         galleries = new LinkedList<String>();
@@ -80,24 +80,24 @@ public class KairosUtils {
     }
 
     public static void enrollUsers(Map<String, Long> map, Bitmap bmp, String pic, double lat, double lng) {
-        String gallery = (int)lat + "D" + (int)((lat - (int)lat) * 10000000) + " " + (int)lng + "D" + (int)((lng - (int)lng) * 10000000);
+        String gallery = (int)lat + "D" + (int)((lat - (int)lat) * 10000000) + "A" + (int)lng + "D" + (int)((lng - (int)lng) * 10000000);
         Log.d("AYYO", gallery);
         boolean galleryExists = false;
         for (String s : galleries) {
-            String[] arr = s.split(" ");
+            String[] arr = s.split("A");
             String[] temp = arr[0].split("D");
             String[] temp2 = arr[1].split("D");
             if(Math.abs(Double.parseDouble(temp[0] + temp[1]) - lat) < 0.05
                     && Math.abs(Double.parseDouble(temp2[0] + temp2[1]) - lng) < 0.05) {
                     galleryExists = true;
-                    gallery = Integer.parseInt(arr[0]) + " " + Integer.parseInt(arr[1]);
+                    gallery = Integer.parseInt(arr[0]) + "A" + Integer.parseInt(arr[1]);
             }
         }
         if(!galleryExists) {
             galleries.add(gallery);
             for (String s : map.keySet()) {
                 try {
-                    myKairos.enroll(s, map.get(s) + "", gallery, "FACE", "false", "0.125", listener);
+                    myKairos.enroll(s, map.get(s) + "", gallery, "FULL", "false", "0.125", listener);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (UnsupportedEncodingException e) {
@@ -106,7 +106,7 @@ public class KairosUtils {
             }
         }
         try {
-            myKairos.recognize(bmp, gallery, "FACE", "0.1", "0.125", "5", recognizeListener);
+            myKairos.recognize(bmp, gallery, "FULL", "0.0", "0.125", "1", listener);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
@@ -120,7 +120,7 @@ public class KairosUtils {
 
     public static void enroll(Bitmap rotatedBmp, String pic, String gallery) {
         try {
-            myKairos.enroll(rotatedBmp, pic, gallery, "FACE", "false", "0.125", listener);
+            myKairos.enroll(rotatedBmp, pic, gallery, "FACE", "false", "0.3", listener);
         } catch(JSONException e) {
             e.printStackTrace();
         } catch(UnsupportedEncodingException e) {
