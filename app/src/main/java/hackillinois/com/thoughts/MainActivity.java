@@ -16,8 +16,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.kairos.Kairos;
 
 import java.io.File;
@@ -47,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        YoYo.with(Techniques.BounceInDown).duration(1400).playOn(fab);
+        TextView textView = (TextView) findViewById(R.id.textView);
+        YoYo.with(Techniques.FadeIn).duration(2000).playOn(textView);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
         Matrix mtx = new Matrix();
         mtx.preRotate(90);
         Bitmap rotatedBmp = Bitmap.createBitmap(image, 0, 0, w, h, mtx, true);
-        int sW = (int) (rotatedBmp.getWidth() * 0.2f);
-        int sH = (int) (rotatedBmp.getHeight() * 0.2f);
+        int sW = (int) (rotatedBmp.getWidth() * 0.3f);
+        int sH = (int) (rotatedBmp.getHeight() * 0.3f);
         Bitmap rBmp = Bitmap.createScaledBitmap(rotatedBmp, sW, sH, true);
 
         ImageView imgview = (ImageView) findViewById(R.id.imageView);
