@@ -1,5 +1,6 @@
 package hackillinois.com.thoughts;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,53 +9,37 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.kairos.Kairos;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     public static RequestQueue queue;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
     String mCurrentPhotoPath;
     static Kairos myKairos;
     Map<Long, String> users;
+    public static Bitmap bmpImg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // instantiate a new kairos instance
-
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        KairosUtils.init(this);
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        YoYo.with(Techniques.BounceInDown).duration(1400).playOn(fab);
-        TextView textView = (TextView) findViewById(R.id.textView);
-        YoYo.with(Techniques.FadeIn).duration(2000).playOn(textView);
-
-        fab.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.main_activity);
+        Button button = (Button)findViewById(R.id.btnMind);
+        KairosUtils.init(getApplicationContext());
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO: Make a volley request here
@@ -137,26 +122,15 @@ public class MainActivity extends AppCompatActivity {
         Matrix mtx = new Matrix();
         mtx.preRotate(90);
         Bitmap rotatedBmp = Bitmap.createBitmap(image, 0, 0, w, h, mtx, true);
-        int sW = (int) (rotatedBmp.getWidth() * 0.3f);
-        int sH = (int) (rotatedBmp.getHeight() * 0.3f);
+        int sW = (int) (rotatedBmp.getWidth() * 0.15f);
+        int sH = (int) (rotatedBmp.getHeight() * 0.15f);
         Bitmap rBmp = Bitmap.createScaledBitmap(rotatedBmp, sW, sH, true);
-
+        bmpImg = rBmp;
         ImageView imgview = (ImageView) findViewById(R.id.imageView);
         imgview.setImageBitmap(rBmp);
         Log.d("Image size", image.getWidth() + "");
-        Map<String, Long> map = new HashMap<>();
-        //map.put("http://jdevanathan3.github.io/subway.jpeg", 9292L);
-        map.put("http://jdevanathan3.github.io/0220160359.jpg", 456L);
-        //map.put("http://jdevanathan3.github.io/0220161356.jpg", 567L);
-        //map.put("http://jdevanathan3.github.io/0220161441.jpg", 696L);*/
-
-        //ONES WE ADD
-        /*map.put("http://jdevanathan3.github.io/0220161457.jpg", 6969L);
-        map.put("http://jdevanathan3.github.io/0220161452.jpg", 3434L);*/
-        //ALEX
-        map.put("http://jdevanathan3.github.io/0220161356.jpg", 3435L);
-        //end alex
-        KairosUtils.enrollUsers(map, rBmp, "subwaypic", 25, 25);
+        Intent intent = new Intent(this, TwitterSearchActivity.class);
+        startActivity(intent);
 
     }
 }
